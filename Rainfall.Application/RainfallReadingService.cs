@@ -4,7 +4,7 @@ namespace Rainfall.Application
 {
     public interface IRainfallReadingService
     {
-        Task<List<RainfallReading>> GetRainfallReadingsAsync(string stationId, int count, CancellationToken cancelationToken = default);
+        Task<IEnumerable<RainfallReading>> GetRainfallReadingsAsync(string stationId, int count, CancellationToken cancelationToken = default);
     }
 
     public class RainfallReadingService : IRainfallReadingService
@@ -16,7 +16,7 @@ namespace Rainfall.Application
             _rainfallReadingsClient = rainfallReadingsClient;
         }
 
-        public async Task<List<RainfallReading>> GetRainfallReadingsAsync(string stationId, int count, CancellationToken cancelationToken = default)
+        public async Task<IEnumerable<RainfallReading>> GetRainfallReadingsAsync(string stationId, int count, CancellationToken cancelationToken = default)
         {
             var govRainfallReading = await _rainfallReadingsClient.GetRainfallReadingsAsync(stationId, count, cancelationToken);
             var rainfallReading = new List<RainfallReading>();

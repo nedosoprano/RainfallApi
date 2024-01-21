@@ -10,4 +10,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rainfall.Application\Rainfall.Application.csproj" />
+  </ItemGroup>
+
 </Project>
