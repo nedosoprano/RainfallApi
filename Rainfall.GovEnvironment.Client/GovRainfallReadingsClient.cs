@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Rainfall.Application.Models;
+using Rainfall.GovEnvironment.Client.Exceptions;
 
 namespace Rainfall.Application
 {
@@ -27,11 +28,17 @@ namespace Rainfall.Application
         public async Task<GovRainfallReadingResponse> GetRainfallReadingsAsync(string stationId, int count, CancellationToken cancelationToken = default)
         {
             var requestRoute = string.Format(RainfallReadingsRoute, stationId, count);
+            string content;
 
-            var responce = await _httpClient.GetAsync(requestRoute, cancelationToken);
-            var content = await responce.Content.ReadAsStringAsync(cancelationToken);
-
-            //TODO: add error handling
+            try
+            {
+                var responce = await _httpClient.GetAsync(requestRoute, cancelationToken);
+                content = await responce.Content.ReadAsStringAsync(cancelationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new GovRainfallReadingRequestException(ex.Message);
+            }
 
             return JsonConvert.DeserializeObject<GovRainfallReadingResponse>(content);
         }
