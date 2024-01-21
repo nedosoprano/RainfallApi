@@ -16,7 +16,7 @@ namespace Rainfall.Application.Extensions
         /// Adds the <see cref="IGovRainfallReadingsClient"/> to the provided <paramref name="services"/> <see cref="IServiceCollection"/>.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to use.</param>
-        public static IHttpClientBuilder AddCommandsClient(this IServiceCollection services)
+        public static IHttpClientBuilder AddGovRainfallReadingsClient(this IServiceCollection services)
         {
             return services
                 .AddHttpClient<IGovRainfallReadingsClient, GovRainfallReadingsClient>()
