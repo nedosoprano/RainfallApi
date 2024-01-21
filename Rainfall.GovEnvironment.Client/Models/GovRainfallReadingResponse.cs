@@ -7,6 +7,6 @@
     {
         public string? Context { get; set; }
         public GovRainfallReadingMeta? Meta { get; set; }
-        public List<GovRainfallReading>? Items { get; set; }
+        public IEnumerable<GovRainfallReading>? Items { get; set; }
     }
 }

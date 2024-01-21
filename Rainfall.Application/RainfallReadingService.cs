@@ -1,4 +1,5 @@
-﻿using Rainfall.Application.Models;
+﻿using Rainfall.Application.Exceptions;
+using Rainfall.Application.Models;
 
 namespace Rainfall.Application
 {
@@ -19,6 +20,10 @@ namespace Rainfall.Application
         public async Task<IEnumerable<RainfallReading>> GetRainfallReadingsAsync(string stationId, int count, CancellationToken cancelationToken = default)
         {
             var govRainfallReading = await _rainfallReadingsClient.GetRainfallReadingsAsync(stationId, count, cancelationToken);
+
+            if (govRainfallReading?.Items is null || govRainfallReading.Items.Count() == 0)
+                throw new RainfullReadingsEmptyException();
+
             var rainfallReading = new List<RainfallReading>();
 
             foreach(var govReading in govRainfallReading.Items)
