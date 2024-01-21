@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using Rainfall.Application.Models;
 using Rainfall.GovEnvironment.Client.Exceptions;
 
@@ -40,7 +40,7 @@ namespace Rainfall.Application
                 throw new GovRainfallReadingRequestException(ex.Message);
             }
 
-            return JsonConvert.DeserializeObject<GovRainfallReadingResponse>(content);
+            return JsonSerializer.Deserialize<GovRainfallReadingResponse>(content);
         }
     }
 }
