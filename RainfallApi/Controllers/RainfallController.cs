@@ -4,11 +4,14 @@ using Rainfall.Application.Exceptions;
 using Rainfall.Application.Models;
 using RainfallApi.Exceptions;
 using RainfallApi.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RainfallApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("")]
+    [Produces("application/json")]
+    [SwaggerTag("Operations relating to rainfall")]
     public class RainfallController : ControllerBase
     {
         private readonly IRainfallReadingService _rainfallService;
@@ -18,7 +21,19 @@ namespace RainfallApi.Controllers
             _rainfallService = rainfallService;
         }
 
-        [HttpGet("/id/{stationId}/readings")]
+        /// <summary>
+        /// Get rainfall readings by station Id.
+        /// </summary>
+        /// <remarks>Retrieve the latest readings for the specified stationId</remarks>
+        /// <response code="200">A list of rainfall readings successfully retrieved</response>
+        /// <response code="400">Invalid request</response>
+        /// <response code="404">No readings found for the specified stationId</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet("/rainfall/id/{stationId}/readings")]
+        [ProducesResponseType(typeof(RainfallReadingResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 400)]
+        [ProducesResponseType(typeof(ErrorResponse), 404)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
         public async Task<IActionResult> GetRainfallReadingsAsync(string stationId, [FromQuery] int count = 10)
         {
             IEnumerable<RainfallReading> rainfallReadings;
@@ -49,7 +64,7 @@ namespace RainfallApi.Controllers
             return Ok(rainfallReadings);
         }
 
-        private void ValidateRequest(string stationId, int count)
+        private static void ValidateRequest(string stationId, int count)
         {
             if (string.IsNullOrWhiteSpace(stationId))
                 throw new InvalidRequestPropertyException(nameof(stationId), "The property can not be null or empty.");
